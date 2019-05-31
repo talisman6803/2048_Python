@@ -14,7 +14,7 @@ def chk_board(lt):
 def board_add(lt):
     chk = chk_board(lt)
     temp = chk[random.randint(0,len(chk)-1)]
-    if random.random()+0.5>=1:
+    if random.random()+0.7>=1:
         lt[temp] = 2
     else :
         lt[temp] = 4
@@ -44,15 +44,6 @@ def key_in(lt):
             print("INCORRECT INPUT!")
             x = input()
     return lt
-
-# 1-Dimension board(Original)
-# 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
-
-# 2-Dimension board
-# 0  1  2  3
-# 4  5  6  7
-# 8  9  10 11
-# 12 13 14 15
 
 def merge(oneline):
     for i in range(3):
