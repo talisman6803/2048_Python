@@ -29,15 +29,20 @@ def key_in(lt):
     x = input()
     while True:
         if x == 'w':
+            lt = mu(lt)
             break
         elif x == 'a':
+            lt = ml(lt)
             break
         elif x == 's':
+            lt = md(lt)
             break
         elif x == 'd':
+            lt = mr(lt)
             break
         else:
             print("INCORRECT INPUT!")
+            x = input()
     return lt
 
 # 1-Dimension board(Original)
@@ -50,9 +55,30 @@ def key_in(lt):
 # 12 13 14 15
 
 def merge(oneline):
-    for i in range(4):
-        
-    return one
+    for i in range(3):
+        if oneline[i] != 0:
+            for j in range(3-i):
+                if oneline[i] == oneline[j+i+1]:
+                    oneline[i] = oneline[i] * 2
+                    oneline[i+j+1] = 0
+                    break
+                elif oneline[j+i+1] == 0:
+                    continue
+                else:
+                    break
+        else:
+            continue
+    idx = 0
+    cnt = 0
+    while idx < 4:
+        if oneline[idx] == 0 and cnt != 3:
+            del oneline[idx]
+            oneline.append(0)
+            idx = 0
+            cnt += 1
+        else :
+            idx += 1
+    return oneline
 
 def mu(lt):
     for i in range(4):
@@ -61,7 +87,19 @@ def mu(lt):
 
 def md(lt):
     for i in range(4):
-        merge([lt[
+        lt[12+i],lt[8+i],lt[4+i],lt[i] = merge([lt[12+i],lt[8+i],lt[4+i],lt[i]])
+    return lt
+
+def ml(lt):
+    for i in range(4):
+        lt[i*4],lt[1+i*4],lt[2+i*4],lt[3+i*4] = merge([lt[i*4],lt[1+i*4],lt[2+i*4],lt[3+i*4]])
+    return lt
+
+def mr(lt):
+    for i in range(4):
+        lt[3+i*4],lt[2+i*4],lt[1+i*4],lt[i*4] = merge([lt[3+i*4],lt[2+i*4],lt[1+i*4],lt[i*4]])
+    return lt
+
 def main():
     print("Welcome To 2048")
     print("Push W/A/S/D to Play.")
@@ -69,4 +107,12 @@ def main():
     bd = board_add(bd)
     bd = board_add(bd)
     print_board(bd)
-    
+    cnt = 0
+    while cnt == 0:
+        key_in(bd)
+        bd = board_add(bd)
+        print_board(bd)
+        for i in range(len(bd)):
+            if bd[i] == 2048:
+                cnt += 1
+                break
