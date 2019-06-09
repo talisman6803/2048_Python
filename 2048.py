@@ -1,5 +1,6 @@
 import random
-
+import sys
+import os
 def new_game():
     init_board = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     return init_board
@@ -21,11 +22,19 @@ def board_add(lt):
     return lt
 
 def print_board(lt):
-    for i in range(4):
-        print(lt[0+4*i],lt[1+4*i],lt[2+4*i],lt[3+4*i])
+    print("|---------------------------|")
+    for i in range(len(lt)):
+        print("|", end='')
+        print("", lt[i], end='')
+        for j in range(5-len(str(lt[i]))):
+            print(" ", end='')
+        if i%4 == 3:
+            print("|")
+            print("|------+------+------+------|")
+    os.system('cls')
 
 def key_in(lt):
-    print("Distinguish only W/A/S/D")
+    print("Distinguish only W/A/S/D/X")
     x = input()
     while True:
         if x == 'w':
@@ -40,6 +49,9 @@ def key_in(lt):
         elif x == 'd':
             lt = mr(lt)
             break
+        elif x == 'x':
+            print("GAME EXIT")
+            sys.exit()
         else:
             print("INCORRECT INPUT!")
             x = input()
@@ -93,17 +105,23 @@ def mr(lt):
 
 def main():
     print("Welcome To 2048")
-    print("Push W/A/S/D to Play.")
+    print("Push W/A/S/D to Play(exit:x).")
     bd = new_game()
     bd = board_add(bd)
     bd = board_add(bd)
     print_board(bd)
     cnt = 0
-    while cnt == 0:
-        key_in(bd)
-        bd = board_add(bd)
-        print_board(bd)
-        for i in range(len(bd)):
-            if bd[i] == 2048:
-                cnt += 1
-                break
+    try:
+        while cnt == 0:
+            key_in(bd)
+            bd = board_add(bd)
+            print_board(bd)
+            for i in range(len(bd)):
+                if bd[i] == 2048:
+                    cnt += 1
+                    break
+    except ValueError:
+        print("GAME OVER")
+
+
+main()
