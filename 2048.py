@@ -1,6 +1,6 @@
 import random
 import sys
-import os
+
 def new_game():
     init_board = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     return init_board
@@ -15,7 +15,7 @@ def chk_board(lt):
 def board_add(lt):
     chk = chk_board(lt)
     temp = chk[random.randint(0,len(chk)-1)]
-    if random.random()+0.7>=1:
+    if random.random()+0.85>=1:
         lt[temp] = 2
     else :
         lt[temp] = 4
@@ -31,7 +31,7 @@ def print_board(lt):
         if i%4 == 3:
             print("|")
             print("|------+------+------+------|")
-    os.system('cls')
+
 
 def key_in(lt):
     print("Distinguish only W/A/S/D/X")
@@ -103,6 +103,18 @@ def mr(lt):
         lt[3+i*4],lt[2+i*4],lt[1+i*4],lt[i*4] = merge([lt[3+i*4],lt[2+i*4],lt[1+i*4],lt[i*4]])
     return lt
 
+def gameover(bd):
+    for i in range(15):
+        if bd[i] == bd[i+1]:
+            return False
+    for i in range(4):
+        if bd[i] == bd[i+4]:
+            return False
+        if bd[i+8] == bd[i+12]:
+            return False
+    return True
+
+
 def main():
     print("Welcome To 2048")
     print("Push W/A/S/D to Play(exit:x).")
@@ -111,17 +123,27 @@ def main():
     bd = board_add(bd)
     print_board(bd)
     cnt = 0
-    try:
-        while cnt == 0:
+    t = 0
+    while cnt == 0:
+        try:
+            print(t, "moves")
             key_in(bd)
             bd = board_add(bd)
             print_board(bd)
+            t += 1
             for i in range(len(bd)):
                 if bd[i] == 2048:
+                    print("You've got 2048 on your board through", t,"times of move.")
                     cnt += 1
                     break
-    except ValueError:
-        print("GAME OVER")
+
+        except ValueError:
+            if gameover(bd):
+                print("GAME OVER!")
+                sys.exit()
+            print_board(bd)
+            print("retry!")
+
 
 
 main()
